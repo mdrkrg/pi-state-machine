@@ -3,10 +3,12 @@ import type { Graph, NodeId } from "../src/types.ts";
 import { graph } from "../src/graph.ts";
 import { createRegisters, resetRegisters } from "../src/state.ts";
 import { activeToolsFor, createRouteTool } from "../src/route-tool.ts";
+import { mockTools } from "../src/mocks.ts";
 
 export default function (pi: ExtensionAPI) {
 	const state = createRegisters(graph);
 
+	for (const t of mockTools(pi)) pi.registerTool(t);
 	pi.registerTool(createRouteTool(pi, graph, () => state));
 	pi.registerCommand("orch:state", {
 		description: "Print current orchestration state",

@@ -45,7 +45,11 @@ export function createRouteTool(pi: ExtensionAPI, graph: Graph, getReg: () => Re
 					`illegal transition ${from} -> ${args.target}; declared exits: ${exits(graph, from).join(", ") || "(none)"}`,
 				);
 			}
-			const verdict = edge.guard?.(state) ?? { ok: true as const };
+			// Guards see the payload: evaluate against a payload-merged snapshot so a
+			// payload-gated edge (intake -> research requires topic) validates in one
+			// route call. The merge happens on a copy, so a rejection mutates nothing.
+			const merged: Registers = { ...state, facts: { ...state.facts, ...args.payload } };
+			const verdict = edge.guard?.(merged) ?? { ok: true as const };
 			if (!verdict.ok) {
 				throw new Error(`guard rejected ${from} -> ${args.target}: ${verdict.reason}`);
 			}
