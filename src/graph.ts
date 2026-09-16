@@ -1,7 +1,7 @@
 import type { Edge, Graph, NodeId, NodeSpec } from "./types.ts";
 import { defineGraph } from "./graph-def.ts";
 import { loadPersonas } from "./personas.ts";
-import { atLeast, below, both, exists } from "./guards.ts";
+import { atLeast, atLeastCount, below, belowCount, both, exists } from "./guards.ts";
 
 const topology = {
 	entry: "intake",
@@ -22,13 +22,13 @@ const topology = {
 		{
 			from: "review",
 			to: "draft",
-			guard: both(below("score", 7), below("loops", 3)),
+			guard: both(below("score", 7), belowCount("loops", 3)),
 			effect: (r) => {
 				r.counters.loops = (r.counters.loops ?? 0) + 1;
 			},
 		},
 		{ from: "review", to: "publish", guard: atLeast("score", 7) },
-		{ from: "review", to: "escalate", guard: atLeast("loops", 3) },
+		{ from: "review", to: "escalate", guard: atLeastCount("loops", 3) },
 		{ from: "publish", to: "done", guard: exists("approved") },
 	] satisfies Edge[],
 };

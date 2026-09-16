@@ -16,3 +16,10 @@ export const both = (...gs: Guard[]): Guard => (r) => {
 	}
 	return { ok: true };
 };
+
+// Counter variants: loop caps live in reg.counters, not reg.facts.
+export const atLeastCount = (k: string, n: number): Guard => (r) =>
+	(r.counters[k] ?? 0) >= n ? { ok: true } : { ok: false, reason: `counters.${k}=${r.counters[k] ?? 0} < ${n}` };
+
+export const belowCount = (k: string, n: number): Guard => (r) =>
+	(r.counters[k] ?? 0) < n ? { ok: true } : { ok: false, reason: `counters.${k}=${r.counters[k] ?? 0} >= ${n}` };
