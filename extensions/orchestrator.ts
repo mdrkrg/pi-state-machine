@@ -39,6 +39,18 @@ export default function (pi: ExtensionAPI) {
 			},
 		],
 	}));
+
+	// HITL gate on world writes. Approval is state, not atmosphere: the
+	// publish -> done guard consumes facts.approved.
+	pi.on("tool_call", async (event, ctx) => {
+		if (event.toolName !== "publish_external") return;
+		if (!ctx.hasUI) {
+			return { block: true, reason: "no UI environment; world writes are denied by default" };
+		}
+		const ok = await ctx.ui.confirm("Publish to the external system?", JSON.stringify(event.input, null, 2));
+		if (!ok) return { block: true, reason: "user declined the publication" };
+		state.facts.approved = true;
+	});
 }
 
 function renderPersona(graph: Graph, node: NodeId): string {
