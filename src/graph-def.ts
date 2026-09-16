@@ -6,7 +6,12 @@ export interface Topology {
 	edges: Edge[];
 }
 
-export type PersonaData = Record<NodeId, { tools: string[]; body: string }>;
+export interface PersonaPayload {
+	tools: string[];
+	body: string;
+}
+
+export type PersonaData = Record<NodeId, PersonaPayload>;
 
 /**
  * Merge topology with persona data and run startup checks.

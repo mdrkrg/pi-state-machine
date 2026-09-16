@@ -2,14 +2,14 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { NodeId } from "./types.ts";
-import type { PersonaData } from "./graph-def.ts";
+import type { PersonaPayload } from "./graph-def.ts";
 
 /**
  * Load personas/*.md. Frontmatter supports only "id: x" and "tools: [a, b]"; no YAML.
  * Throws on malformed files: persona data errors are startup errors too.
  */
-export function loadPersonas(dir = fileURLToPath(new URL("../personas", import.meta.url))): Record<NodeId, PersonaData> {
-	const out: Record<NodeId, PersonaData> = {};
+export function loadPersonas(dir = fileURLToPath(new URL("../personas", import.meta.url))): Record<NodeId, PersonaPayload> {
+	const out: Record<NodeId, PersonaPayload> = {};
 	for (const name of readdirSync(dir).sort()) {
 		if (!name.endsWith(".md")) continue;
 		const raw = readFileSync(join(dir, name), "utf8");
