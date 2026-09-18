@@ -16,9 +16,10 @@ Read these first; do not reverse-engineer the runtime when a doc exists.
   settings, package manifests, session/entry format, SDK host.
 - `.../examples/extensions/` -- runnable extensions; `confirm-destructive.ts` is
   the reference for a `ctx.ui.confirm` + `sessionManager.getEntries()` gate.
-- The pi repository also keeps its own flat dev skills under `.pi/skills/`
-  (`add-llm-provider.md`, `interactive-testing.md`, `release.md`), for developing
-  pi itself. This repo's `pi-state-machine-dev` skill is the one for this PoC.
+- The pi repository itself (`https://github.com/earendil-works/pi`) keeps its own
+  flat dev skills under `.pi/skills/` for developing pi. They are not part of the
+  published package, so fetch them from upstream if needed. This repo's
+  `pi-state-machine-dev` skill is the one for this PoC.
 
 ## Facts the design depends on
 
