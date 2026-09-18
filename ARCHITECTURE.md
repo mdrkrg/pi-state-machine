@@ -247,11 +247,29 @@ noted in the code.
 pi-state-machine/
 ├── ARCHITECTURE.md
 ├── package.json                 # "pi" manifest: ./extensions/orchestrator.ts
+├── .pi/skills/                  # development skills only; no settings.json here
+├── live/                        # live sandbox: pi started here loads the extension
+│   ├── .pi/settings.json        # { "extensions": ["../../extensions"] }
+│   └── README.md
 ├── extensions/orchestrator.ts   # assembly: pi API <-> src
 ├── src/                         # pure core plus host-touching tool definitions
 ├── personas/*.md
 └── test/                        # node:test, faux provider / stubs
 ```
+
+Discovery facts that differ from intuition:
+
+- A `pi` section in the root `package.json` is **not** scanned at the cwd level.
+  It applies only when the repo is installed as a package.
+- At the project level, Pi auto-discovers `cwd/.pi/extensions` and resolves the
+  `extensions` paths from `settings.json` relative to `.pi` itself -- hence
+  `"../../extensions"` in the sandbox.
+- Project resources are not discovered by walking parent directories, and they
+  load only when the project is trusted (the first interactive run asks).
+- `AGENTS.md`, by contrast, does walk ancestors, which is why the live run uses
+  `-nc` for isolation.
+
+Start the live sandbox with `cd live && pi -nc`; see `live/README.md`.
 
 Dependency discipline: `src/graph.ts`, `src/guards.ts`, `src/types.ts`, and
 `src/state.ts` import no Pi package -- pure data and pure functions. Only

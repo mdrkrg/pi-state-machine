@@ -13,7 +13,7 @@ import {
 import type { AssistantMessage, Context } from "@earendil-works/pi-ai";
 import { createAgentSession, SessionManager, type SessionEntry } from "@earendil-works/pi-coding-agent";
 
-const repoRoot = fileURLToPath(new URL("..", import.meta.url));
+const liveDir = fileURLToPath(new URL("../live", import.meta.url));
 
 const say = (text: string) => fauxAssistantMessage(text);
 const call = (name: string, args: Record<string, unknown>) =>
@@ -28,7 +28,7 @@ interface FauxSession {
 
 /**
  * Real AgentSession with our extension discovered the production way
- * (.pi/settings.json); the model is the scripted faux provider, so the
+ * (live/.pi/settings.json); the model is the scripted faux provider, so the
  * whole loop runs without any network or API call.
  */
 async function createFauxSession(steps: AssistantMessage[], t: test.TestContext): Promise<FauxSession> {
@@ -51,7 +51,7 @@ async function createFauxSession(steps: AssistantMessage[], t: test.TestContext)
 		}),
 	);
 	const { session } = await createAgentSession({
-		cwd: repoRoot,
+		cwd: liveDir,
 		agentDir,
 		model: faux.getModel(),
 		sessionManager: SessionManager.inMemory(),

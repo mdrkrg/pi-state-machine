@@ -2,6 +2,16 @@
 
 - `./ARCHITECTURE.md` PoC design doc of this project. Covers the happy paths, explicitly not covering edge cases.
 
+## Live testing
+
+Root `.pi/` holds development skills only, no `settings.json`. Live-test the orchestrator extension from the sandbox subdirectory, whose `live/.pi/settings.json` wires the extension:
+
+```sh
+cd live && pi -nc  # -nc skips the inherited repo AGENTS.md
+```
+
+See `live/README.md` for what to expect.
+
 ## Styling
 
 - No non-ascii special characters in comments.
