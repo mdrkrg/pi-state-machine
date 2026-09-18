@@ -35,19 +35,20 @@ See `live/README.md`.
   `extensions/orchestrator.ts`, `src/route-tool.ts`, `src/mocks.ts`.
 - Guards are pure functions of `Registers`; effects mutate `reg`; transitions
   commit in order effect -> payload -> node -> history.
+- The route tool evaluates the guard against a payload-merged **copy** of the
+  registers, so a payload-gated edge validates in one call and a rejection
+  mutates nothing.
 - Topology errors are startup errors: `defineGraph` throws.
 - `route` never terminates except at terminal nodes; persona switching rides
   `on("context")` (request-local, no transcript writes).
 
-## Extension wiring facts (verified against pi 0.85.1)
+## Harness API reference
 
-- Project resources resolve strictly from `cwd/.pi` (no ancestor walk):
-  `package-manager.js` `projectBaseDir = join(cwd, CONFIG_DIR_NAME)`.
-- `settings.json` `extensions` paths resolve relative to `.pi`, hence
-  `"../../extensions"` from `live/.pi`.
-- The root `package.json` `"pi"` manifest is not scanned at cwd level; it only
-  applies when the repo is consumed as an installed package.
-- `AGENTS.md` does walk ancestors, so live runs need `-nc` for isolation.
+`references/pi-harness-facts.md` holds the verified pi facts this design relies
+on (through public symbols), the mechanisms it deliberately avoids, and the
+extension discovery/wiring rules. It also points at pi's own authoring docs and
+examples shipped in `node_modules/@earendil-works/pi-coding-agent/`. Read them
+before changing hooks, tool policy, or live wiring.
 
 ## Layout
 
