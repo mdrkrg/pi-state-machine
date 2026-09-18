@@ -1,6 +1,7 @@
 ## References
 
 - `./ARCHITECTURE.md` PoC design doc of this project. Covers the happy paths, explicitly not covering edge cases.
+- `.pi/skills/pi-state-machine-dev/` development skill. `references/pi-harness-facts.md` states the verified pi facts by symbol and points at pi's own extension docs and examples.
 
 ## Live testing
 
@@ -15,6 +16,7 @@ See `live/README.md` for what to expect.
 ## Styling
 
 - No non-ascii special characters in comments.
+- Do not reference `ARCHITECTURE.md` by section number in code or comments; quote the relevant text if a pointer is needed.
 - Be concise, only comment when explicit documentation are needed and good for reviewers to notice.
 
 ## Commit messages
